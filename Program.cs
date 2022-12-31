@@ -9,8 +9,8 @@ namespace mc
             while (true)
             {
                 var line = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(line)) Console.WriteLine("not parseable");
-            
+                if (string.IsNullOrWhiteSpace(line)) break;
+
                 var parser = new Parser(line);
                 var expression = parser.Parse();
             
