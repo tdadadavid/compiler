@@ -6,49 +6,47 @@ namespace mc
     {
         static void Main(string[] args)
         {
-            var line = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(line)) Console.WriteLine("not parseable");
-
-            // var parser = new Parser(line);
-            // var expression = parser.Parse();
-
-            // var color = Console.ForegroundColor;
-            // Console.ForegroundColor = ConsoleColor.DarkGray;
-
-          
-            // Console.ForegroundColor = color;
-            // var lexer = new Lexer(line);
-
             while (true)
             {
-                // continuously iterate as long as there are tokens
-                // get each token check if the token is an EndOfFile Token
-                // if true break (parsing ended) else check the value of the 
-                // token passed if its null (for symbols) print the token kind
-                // and token Text else Print the Kind, Text and Value
-                var token = lexer.NextToken();
-                if (token.Kind == SyntaxKind.EndOfFile) break;
-
-                Console.WriteLine(token.Value != null
-                    ? $"{token.Kind}: {token.Text} {token.Value}"
-                    : $"{token.Kind}: {token.Text}");
+                var line = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(line)) Console.WriteLine("not parseable");
+            
+                var parser = new Parser(line);
+                var expression = parser.Parse();
+            
+                var color = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Green;
+            
+                PrettyPrint(expression);
+            
+                Console.ForegroundColor = color;
             }
+            
         }
 
-        static void PrettyPrint(SyntaxNode node, string indent = "")
+        static void PrettyPrint(SyntaxNode node, string indent = "", bool isLast = true)
         {
+            var marker = isLast ? "└──" : "├──";
+            Console.Write(indent);
+            Console.Write(marker);
             Console.Write(node.Kind);
 
-            if (node is SyntaxToken t && t != null)
+            if (node is SyntaxToken t)
             {
                 Console.Write(" ");
                 Console.Write(t.Value);
             }
 
-            indent += "    ";
-            foreach(var child in node.GetChildren()) PrettyPrint(child, indent);
+            Console.WriteLine();
+
+            indent += isLast ? "    " : "│   ";
+            var lastChild = node.GetChildren().LastOrDefault();
+            
+            foreach (var child in node.GetChildren()) PrettyPrint(child, indent, child == lastChild);
         }
     }
+    
+    
     enum SyntaxKind
     {
         NumberToken,
