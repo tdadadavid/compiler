@@ -291,7 +291,10 @@ namespace mc
             //       Right (r) ==>  Operands eg Numbers
             var left = ParsePrimaryExpression();
 
-            while (TokenIsPlusToken(Current) || TokenIsSubtractionToken(Current))
+            while (
+            TokenIsPlusToken(Current) || TokenIsSubtractionToken(Current) ||
+            TokenIsDivisionToken(Current) || TokenIsMultiplicationToken(Current)
+            )
             {
                 var operatorToken = NextToken();
                 var right = ParsePrimaryExpression();
@@ -331,6 +334,8 @@ namespace mc
 
         private SyntaxToken Current => Peek(0);
 
+        private bool TokenIsMultiplicationToken(SyntaxToken token) => token.Kind == SyntaxKind.MultiplicationToken;
+        private bool TokenIsDivisionToken(SyntaxToken token) => token.Kind == SyntaxKind.DivisionToken;
         private bool TokenIsSubtractionToken(SyntaxToken token) => token.Kind == SyntaxKind.SubtractionToken;
         private bool TokenIsPlusToken(SyntaxToken token) => token.Kind == SyntaxKind.PlusToken;
         private bool TokenIsWhiteSpace(SyntaxToken token) => token.Kind == SyntaxKind.WhiteSpaceToken;
