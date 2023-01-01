@@ -278,12 +278,30 @@ namespace mc
 
         public SyntaxTree Parse()
         {
-            var expression = parseExpression();
+            var expression = ParseTerm();
             var endOfFileToken = Match(SyntaxKind.EndOfFile);
             return new SyntaxTree(_diagnostics, expression, endOfFileToken);
         }
 
-        private ExpressionSyntax parseExpression()
+        private ExpressionSyntax ParseTerm()
+        {
+            // The Pre-Order Traversal (L-ROOT-R) algorithm is used here 
+            // Where Left (l) ==> Operands eg Numbers
+            //       Root (ROOT) ==> Operator eg (*,+,-)
+            //       Right (r) ==>  Operands eg Numbers
+            var left = ParseFactor();
+            
+            while (TokenIsPlusToken(Current) || TokenIsSubtractionToken(Current))
+            {
+                var operatorToken = NextToken();
+                var right = ParseFactor();
+                left = new BinaryExpressionSyntax(left, operatorToken, right);
+            }
+
+            return left;
+        }
+
+        private ExpressionSyntax ParseFactor()
         {
             // The Pre-Order Traversal (L-ROOT-R) algorithm is used here 
             // Where Left (l) ==> Operands eg Numbers
@@ -291,10 +309,7 @@ namespace mc
             //       Right (r) ==>  Operands eg Numbers
             var left = ParsePrimaryExpression();
 
-            while (
-            TokenIsPlusToken(Current) || TokenIsSubtractionToken(Current) ||
-            TokenIsDivisionToken(Current) || TokenIsMultiplicationToken(Current)
-            )
+            while (TokenIsDivisionToken(Current) || TokenIsMultiplicationToken(Current))
             {
                 var operatorToken = NextToken();
                 var right = ParsePrimaryExpression();
