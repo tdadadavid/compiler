@@ -12,14 +12,32 @@ namespace mc
                 if (string.IsNullOrWhiteSpace(line)) break;
 
                 var parser = new Parser(line);
-                var expression = parser.Parse();
+                var syntaxTree = parser.Parse();
             
                 var color = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Green;
+                Console.ForegroundColor = ConsoleColor.DarkBlue;
             
-                PrettyPrint(expression);
+                PrettyPrint(syntaxTree.Root);
+
+                if (syntaxTree.Diagnostics.Any())
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+
+                    foreach (var diagnostic in syntaxTree.Diagnostics)
+                    {
+                        Console.WriteLine(diagnostic);
+                    }
+                }
+                else
+                {
+                    var evaluator = new Evaluator(syntaxTree.Root);
+                    var result = evaluator.Evaluate();
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"result = {result}");
+                }
             
                 Console.ForegroundColor = color;
+                
             }
             
         }
@@ -45,8 +63,6 @@ namespace mc
             foreach (var child in node.GetChildren()) PrettyPrint(child, indent, child == lastChild);
         }
     }
-    
-    
     enum SyntaxKind
     {
         NumberToken,
@@ -91,12 +107,15 @@ namespace mc
     {
         private readonly string _text;
         private int _position;
+        private readonly List<string> _diagnostics = new List<string>(); // this is for handling errors
 
         public Lexer(string text)
         {
             _text = text;
         }
 
+        public IEnumerable<string> Diagnostic => _diagnostics;
+        
         // method to get the current character in the text
         private char Current => IfPositionIsAtEndOfLineOrOutOfTheLine() ? '\n' : _text[_position];
 
@@ -123,8 +142,10 @@ namespace mc
 
                 var length = _position - start;
                 var subStringDigit = _text.Substring(start, length);
-                int.TryParse(subStringDigit, out var value);
-                return new SyntaxToken(SyntaxKind.NumberToken, start, subStringDigit, value);
+                if(!int.TryParse(subStringDigit, out var value)) 
+                    _diagnostics.Add($"ERROR: expression {subStringDigit} cannot be represented in int32");
+                else
+                    return new SyntaxToken(SyntaxKind.NumberToken, start, subStringDigit, value);
             }
 
             if (char.IsWhiteSpace(Current))
@@ -137,17 +158,39 @@ namespace mc
                 return new SyntaxToken(SyntaxKind.WhiteSpaceToken, start, whiteSpaceSubString, null);
             }
 
-            return Current switch
+            switch (Current)
             {
-                '+' => new SyntaxToken(SyntaxKind.PlusToken, _position++, "+", null),
-                '-' => new SyntaxToken(SyntaxKind.SubtractionToken, _position++, "-", null),
-                '*' => new SyntaxToken(SyntaxKind.MultiplicationToken, _position++, "*", null),
-                '/' => new SyntaxToken(SyntaxKind.DivisionToken, _position++, "/", null),
-                '(' => new SyntaxToken(SyntaxKind.OpenParenthesesToken, _position++, "(", null),
-                ')' => new SyntaxToken(SyntaxKind.ClosedParenthesesToken, _position++, ")", null),
-                _ => new SyntaxToken(SyntaxKind.BadToken, _position++, _text.Substring(_position - 1, 1), null),
-            };
+                case '+':
+                    return new SyntaxToken(SyntaxKind.PlusToken, _position++, "+", null);
+                case '-':
+                    return new SyntaxToken(SyntaxKind.SubtractionToken, _position++, "-", null);
+                case '*':
+                    return new SyntaxToken(SyntaxKind.MultiplicationToken, _position++, "*", null);
+                case '/':
+                    return new SyntaxToken(SyntaxKind.DivisionToken, _position++, "/", null);
+                case '(':
+                    return new SyntaxToken(SyntaxKind.OpenParenthesesToken, _position++, "(", null);
+                case ')':
+                    return new SyntaxToken(SyntaxKind.ClosedParenthesesToken, _position++, ")", null);
+                default:
+                    _diagnostics.Add($"ERROR: bad character input '{Current}'");
+                    return new SyntaxToken(SyntaxKind.BadToken, _position++, _text.Substring(_position - 1, 1), null);
+            }
         }
+    }
+    
+    sealed class SyntaxTree {
+
+        public SyntaxTree(IEnumerable<string> diagnostics, ExpressionSyntax root, SyntaxToken endOfFileToken)
+        {
+            Diagnostics = diagnostics.ToArray();
+            Root = root;
+            EndOfFileToken = endOfFileToken;
+        }
+        
+        public IReadOnlyList<string> Diagnostics { get; }
+        public ExpressionSyntax Root { get; }
+        public SyntaxToken EndOfFileToken { get; }
     }
 
     abstract class SyntaxNode
@@ -173,22 +216,22 @@ namespace mc
             yield return NumberToken;
         }
 
-        private SyntaxToken NumberToken { get; }
+        public SyntaxToken NumberToken { get; }
 
     }
 
     sealed class BinaryExpressionSyntax : ExpressionSyntax
     {
 
-        public BinaryExpressionSyntax(ExpressionSyntax left, SyntaxToken token, ExpressionSyntax right)
+        public BinaryExpressionSyntax(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
         {
             Left = left;
-            Token = token;
+            OperatorToken = operatorToken;
             Right = right;
         }
 
         public ExpressionSyntax Left { get; }
-        public SyntaxToken Token { get; }
+        public SyntaxToken OperatorToken { get; }
         public ExpressionSyntax Right { get; }
 
         public override SyntaxKind Kind => SyntaxKind.BinaryExpression;
@@ -196,7 +239,7 @@ namespace mc
         public override IEnumerable<SyntaxNode> GetChildren()
         {
             yield return Left;
-            yield return Token;
+            yield return OperatorToken;
             yield return Right;
         }
     }
@@ -205,6 +248,7 @@ namespace mc
     {
         private readonly SyntaxToken[] _tokens;
         private int _positions;
+        private readonly List<string> _diagnostics = new List<string>();
 
         public Parser(string text)
         {
@@ -220,8 +264,10 @@ namespace mc
             } while (token.Kind != SyntaxKind.EndOfFile);
 
             _tokens = tokens.ToArray();
+            _diagnostics.AddRange(lexer.Diagnostic);
         }
 
+        public IEnumerable<string> Diagnostics => _diagnostics;
 
         private SyntaxToken NextToken()
         {
@@ -230,7 +276,14 @@ namespace mc
             return result;
         }
 
-        public ExpressionSyntax Parse()
+        public SyntaxTree Parse()
+        {
+            var expression = parseExpression();
+            var endOfFileToken = Match(SyntaxKind.EndOfFile);
+            return new SyntaxTree(_diagnostics, expression, endOfFileToken);
+        }
+
+        private ExpressionSyntax parseExpression()
         {
             // The Pre-Order Traversal (L-ROOT-R) algorithm is used here 
             // Where Left (l) ==> Operands eg Numbers
@@ -251,7 +304,10 @@ namespace mc
 
         private SyntaxToken Match(SyntaxKind kind)
         {
-            return Current.Kind == kind ? NextToken() : new SyntaxToken(kind, Current.Position, null, null);
+            if (kind == Current.Kind) return NextToken();
+
+            _diagnostics.Add($"ERROR: unexpected token '<{Current.Kind}>' expected '<{kind}>'");
+            return new SyntaxToken(kind, Current.Position, null, null);
         }
 
         private ExpressionSyntax ParsePrimaryExpression()
@@ -279,5 +335,45 @@ namespace mc
         private bool TokenIsPlusToken(SyntaxToken token) => token.Kind == SyntaxKind.PlusToken;
         private bool TokenIsWhiteSpace(SyntaxToken token) => token.Kind == SyntaxKind.WhiteSpaceToken;
         private bool TokenIsBadToken(SyntaxToken token) => token.Kind == SyntaxKind.BadToken;
+    }
+
+    class Evaluator
+    {
+        private readonly ExpressionSyntax _root;
+
+        public Evaluator(ExpressionSyntax root)
+        {
+            _root = root;
+        }
+
+        public int Evaluate()
+        {
+            return EvaluateExpression(_root);
+        }
+
+        private int EvaluateExpression(ExpressionSyntax node)
+        {
+            if (node is NumberExpressionSyntax n)
+                return (int)n.NumberToken.Value!;
+
+            if (node is BinaryExpressionSyntax b)
+            {
+                var left = EvaluateExpression(b.Left);
+                var right = EvaluateExpression(b.Right);
+
+                var operatorKind = b.OperatorToken.Kind;
+                return operatorKind switch
+                {
+                SyntaxKind.PlusToken => left + right,
+                SyntaxKind.DivisionToken => left / right,
+                SyntaxKind.MultiplicationToken => left * right,
+                SyntaxKind.SubtractionToken => left - right,
+                _ => throw new Exception($"Unexpected binary operator {operatorKind}")
+                };
+            }
+
+            throw new Exception($"Unexpected node {node.Kind}");
+        }
+        
     }
 }
