@@ -12,9 +12,9 @@ namespace compiler
                 if (string.IsNullOrWhiteSpace(line)) break;
 
                 var syntaxTree = SyntaxTree.Parse(line);
-            
-                var color = Console.ForegroundColor;
+                
                 Console.ForegroundColor = ConsoleColor.DarkBlue;
+                Console.ResetColor();
             
                 PrettyPrint(syntaxTree.Root);
 
@@ -22,10 +22,7 @@ namespace compiler
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
 
-                    foreach (var diagnostic in syntaxTree.Diagnostics)
-                    {
-                        Console.WriteLine(diagnostic);
-                    }
+                    foreach (var diagnostic in syntaxTree.Diagnostics) Console.WriteLine(diagnostic);
                 }
                 else
                 {
@@ -35,7 +32,7 @@ namespace compiler
                     Console.WriteLine($"result = {result}");
                 }
             
-                Console.ForegroundColor = color;
+                Console.ResetColor();
                 
             }
             
@@ -56,7 +53,7 @@ namespace compiler
 
             Console.WriteLine();
 
-            indent += isLast ? "    " : "│   ";
+            indent += isLast ? "   " : "│   ";
             var lastChild = node.GetChildren().LastOrDefault();
             
             foreach (var child in node.GetChildren()) PrettyPrint(child, indent, child == lastChild);
