@@ -1,4 +1,4 @@
-namespace Minsk.CodeAnaylysis
+namespace compiler.CodeAnalysis
 {
   enum SyntaxKind
   {
@@ -11,7 +11,7 @@ namespace Minsk.CodeAnaylysis
     OpenParenthesesToken,
     ClosedParenthesesToken,
     BadToken,
-    EndOfFile,
+    EndOfFileToken,
     NumberExpression,
     BinaryExpression,
     ParenthesizedExpression
