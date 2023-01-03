@@ -58,6 +58,7 @@ namespace compiler.CodeAnalysis
       // Where Left (l) ==> Operands eg Numbers
       //       Root (ROOT) ==> Operator eg (*,+,-)
       //       Right (r) ==>  Operands eg Numbers
+      // simulating a recursive descent parsing technique
       var left = ParseFactor();
             
       while (TokenIsPlusToken(Current) || TokenIsSubtractionToken(Current))
