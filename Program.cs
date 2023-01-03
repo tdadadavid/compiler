@@ -18,10 +18,14 @@ namespace compiler
             
                 PrettyPrint(syntaxTree.Root);
 
+                // Diagnostics means errors 
+                // if there is any error
                 if (syntaxTree.Diagnostics.Any())
                 {
+                    // change the console to red
                     Console.ForegroundColor = ConsoleColor.Red;
 
+                    // print each diagnostic
                     foreach (var diagnostic in syntaxTree.Diagnostics) Console.WriteLine(diagnostic);
                 }
                 else
