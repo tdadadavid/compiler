@@ -3,7 +3,7 @@ namespace compiler.CodeAnalysis
   class Parser
   {
     private readonly SyntaxToken[] _tokens;
-    private int _positions;
+    private int _pointer;
     private readonly List<string> _diagnostics = new List<string>();
 
     public Parser(string text)
@@ -29,7 +29,7 @@ namespace compiler.CodeAnalysis
     private SyntaxToken NextToken()
     {
       var result = Current;
-      _positions++;
+      _pointer++;
       return result;
     }
 
@@ -190,7 +190,7 @@ namespace compiler.CodeAnalysis
      */
     private SyntaxToken Peek(int offset)
     {
-      var index = _positions + offset;
+      var index = _pointer + offset;
       // if the position is outside the length of the array of tokens
       // return the last element in the array else just return the 
       // element in the required index.
