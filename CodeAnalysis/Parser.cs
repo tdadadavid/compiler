@@ -211,7 +211,5 @@ namespace compiler.CodeAnalysis
     private bool TokenIsDivisionToken(SyntaxToken token) => token.Kind == SyntaxKind.DivisionToken;
     private bool TokenIsSubtractionToken(SyntaxToken token) => token.Kind == SyntaxKind.SubtractionToken;
     private bool TokenIsPlusToken(SyntaxToken token) => token.Kind == SyntaxKind.PlusToken;
-    private bool TokenIsWhiteSpace(SyntaxToken token) => token.Kind == SyntaxKind.WhiteSpaceToken;
-    private bool TokenIsBadToken(SyntaxToken token) => token.Kind == SyntaxKind.BadToken;
   }
 }
