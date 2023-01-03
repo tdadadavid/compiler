@@ -3,7 +3,7 @@ namespace compiler.CodeAnalysis
   class Lexer
   {
     private readonly string _text;
-    private int _position;
+    private int _cursor;
     private readonly List<string> _diagnostics = new List<string>(); // this is for handling errors
 
     public Lexer(string text)
@@ -14,31 +14,32 @@ namespace compiler.CodeAnalysis
     public IEnumerable<string> Diagnostic => _diagnostics;
     
     // Bola is a boy
-    private char Current => PositionIsAtEndOfLineOrOutOfTheLine() ? '\n' : _text[_position];
+    private char Current => PositionIsAtEndOfLineOrOutOfTheLine() ? '\n' : _text[_cursor];
 
     private void Next()
     {
-      _position++;
+      _cursor++;
     }
 
     private bool PositionIsAtEndOfLineOrOutOfTheLine()
     {
-      return _position == _text.Length;
+      return _cursor == _text.Length;
     }
+
 
     public SyntaxToken NextToken()
     {
       // check if we have reached the end of the text (line)
       if (PositionIsAtEndOfLineOrOutOfTheLine())
-        return new SyntaxToken(SyntaxKind.EndOfFileToken, _position++, "\0", null);
+        return new SyntaxToken(SyntaxKind.EndOfFileToken, _cursor++, "\0", null);
 
       // check if the current string is a digit
       if (char.IsDigit(Current))
       {
-        var start = _position;
+        var start = _cursor;
         while (char.IsDigit(Current)) Next();
 
-        var length = _position - start;
+        var length = _cursor - start;
         var subStringDigit = _text.Substring(start, length);
         if(!int.TryParse(subStringDigit, out var value)) 
           _diagnostics.Add($"ERROR: expression {subStringDigit} cannot be represented in int32");
@@ -48,10 +49,10 @@ namespace compiler.CodeAnalysis
 
       if (char.IsWhiteSpace(Current))
       {
-        var start = _position;
+        var start = _cursor;
 
         while (char.IsWhiteSpace(Current)) Next();
-        var length = _position - start;
+        var length = _cursor - start;
         var whiteSpaceSubString = _text.Substring(start, length);
         return new SyntaxToken(SyntaxKind.WhiteSpaceToken, start, whiteSpaceSubString, null);
       }
@@ -59,20 +60,20 @@ namespace compiler.CodeAnalysis
       switch (Current)
       {
         case '+':
-          return new SyntaxToken(SyntaxKind.PlusToken, _position++, "+", null);
+          return new SyntaxToken(SyntaxKind.PlusToken, _cursor++, "+", null);
         case '-':
-          return new SyntaxToken(SyntaxKind.SubtractionToken, _position++, "-", null);
+          return new SyntaxToken(SyntaxKind.SubtractionToken, _cursor++, "-", null);
         case '*':
-          return new SyntaxToken(SyntaxKind.MultiplicationToken, _position++, "*", null);
+          return new SyntaxToken(SyntaxKind.MultiplicationToken, _cursor++, "*", null);
         case '/':
-          return new SyntaxToken(SyntaxKind.DivisionToken, _position++, "/", null);
+          return new SyntaxToken(SyntaxKind.DivisionToken, _cursor++, "/", null);
         case '(':
-          return new SyntaxToken(SyntaxKind.OpenParenthesesToken, _position++, "(", null);
+          return new SyntaxToken(SyntaxKind.OpenParenthesesToken, _cursor++, "(", null);
         case ')':
-          return new SyntaxToken(SyntaxKind.ClosedParenthesesToken, _position++, ")", null);
+          return new SyntaxToken(SyntaxKind.ClosedParenthesesToken, _cursor++, ")", null);
         default:
           _diagnostics.Add($"ERROR: bad character input '{Current}'");
-          return new SyntaxToken(SyntaxKind.BadToken, _position++, _text.Substring(_position - 1, 1), null);
+          return new SyntaxToken(SyntaxKind.BadToken, _cursor++, _text.Substring(_cursor - 1, 1), null);
       }
     }
   }
