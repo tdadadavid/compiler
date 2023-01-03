@@ -26,8 +26,22 @@ namespace compiler.CodeAnalysis
       return _cursor == _text.Length;
     }
 
+    public IEnumerable<SyntaxToken> ScanThroughText() {
+      var tokens = new List<SyntaxToken>();
+      SyntaxToken token;
+      do
+      {
+        token = NextToken();
 
-    public SyntaxToken NextToken()
+        if (!TokenIsWhiteSpace(token) && !TokenIsBadToken(token)) tokens.Add(token);
+
+      } while (token.Kind != SyntaxKind.EndOfFileToken);
+
+      return tokens;
+    }
+
+
+    private SyntaxToken NextToken()
     {
       // check if we have reached the end of the text (line)
       if (PositionIsAtEndOfLineOrOutOfTheLine())
@@ -76,5 +90,8 @@ namespace compiler.CodeAnalysis
           return new SyntaxToken(SyntaxKind.BadToken, _cursor++, _text.Substring(_cursor - 1, 1), null);
       }
     }
+
+    private bool TokenIsWhiteSpace(SyntaxToken token) => token.Kind == SyntaxKind.WhiteSpaceToken;
+    private bool TokenIsBadToken(SyntaxToken token) => token.Kind == SyntaxKind.BadToken;
   }
 }

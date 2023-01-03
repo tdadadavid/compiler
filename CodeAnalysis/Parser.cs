@@ -8,18 +8,14 @@ namespace compiler.CodeAnalysis
 
     public Parser(string text)
     {
-      var tokens = new List<SyntaxToken>();
       var lexer = new Lexer(text);
-      SyntaxToken token;
-      do
-      {
-        token = lexer.NextToken();
 
-        if (!TokenIsWhiteSpace(token) && !TokenIsBadToken(token)) tokens.Add(token);
+      // scan through the input stream and break down into tokens
+      // then pass the tokens as an array to the parser.
+      // A lexer is also called a scanner.
+      _tokens = lexer.ScanThroughText().ToArray(); 
 
-      } while (token.Kind != SyntaxKind.EndOfFileToken);
-
-      _tokens = tokens.ToArray();
+      // add all the errors to the parser.
       _diagnostics.AddRange(lexer.Diagnostic);
     }
 
