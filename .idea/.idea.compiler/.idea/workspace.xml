@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="58ee9925-7d22-4a5d-ae62-1c774dedfc32" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/CodeAnalysis/SyntaxKind.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.compiler/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.compiler/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +79,7 @@
       <workItem from="1672536224773" duration="12263000" />
       <workItem from="1672551177823" duration="389000" />
       <workItem from="1672605782873" duration="283000" />
-      <workItem from="1672618763114" duration="8292000" />
+      <workItem from="1672618763114" duration="11087000" />
     </task>
     <servers />
   </component>
@@ -89,6 +87,17 @@
     <option name="version" value="3" />
   </component>
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
