@@ -13,7 +13,7 @@ namespace compiler.CodeAnalysis
       // scan through the input stream and break down into tokens
       // then pass the tokens as an array to the parser.
       // A lexer is also called a scanner.
-      _tokens = lexer.ScanThroughText().ToArray(); 
+      _tokens = lexer.ScanThroughText(); 
 
       // add all the errors to the parser.
       _diagnostics.AddRange(lexer.Diagnostic);

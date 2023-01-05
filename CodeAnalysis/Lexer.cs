@@ -26,7 +26,7 @@ namespace compiler.CodeAnalysis
       return _cursor == _text.Length;
     }
 
-    public IEnumerable<SyntaxToken> ScanThroughText() {
+    public SyntaxToken[] ScanThroughText() {
       var tokens = new List<SyntaxToken>();
       SyntaxToken token;
       do
@@ -37,7 +37,7 @@ namespace compiler.CodeAnalysis
 
       } while (token.Kind != SyntaxKind.EndOfFileToken);
 
-      return tokens;
+      return tokens.ToArray();
     }
 
 
@@ -51,10 +51,12 @@ namespace compiler.CodeAnalysis
       if (char.IsDigit(Current))
       {
         var start = _cursor;
+
         while (char.IsDigit(Current)) Next();
 
         var length = _cursor - start;
         var subStringDigit = _text.Substring(start, length);
+
         if(!int.TryParse(subStringDigit, out var value)) 
           _diagnostics.Add($"ERROR: expression {subStringDigit} cannot be represented in int32");
         else
@@ -66,8 +68,10 @@ namespace compiler.CodeAnalysis
         var start = _cursor;
 
         while (char.IsWhiteSpace(Current)) Next();
+
         var length = _cursor - start;
         var whiteSpaceSubString = _text.Substring(start, length);
+
         return new SyntaxToken(SyntaxKind.WhiteSpaceToken, start, whiteSpaceSubString, null);
       }
 
