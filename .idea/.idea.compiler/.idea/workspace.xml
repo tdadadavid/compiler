@@ -6,6 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="58ee9925-7d22-4a5d-ae62-1c774dedfc32" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.compiler/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.compiler/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/BinaryExpressionSyntax.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/BinaryExpressionSyntax.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/Evaluator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/Evaluator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/ExpressionSyntax.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/ExpressionSyntax.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/NumberExpressionSyntax.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/NumberExpressionSyntax.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/ParenthesizedExpressionSyntax.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/ParenthesizedExpressionSyntax.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/Parser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/Parser.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/SyntaxKind.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/SyntaxKind.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/SyntaxNode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/SyntaxNode.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,23 +35,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "ReSpellerSettingsId",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;ReSpellerSettingsId&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "/home/king/.config/JetBrains/Rider2022.3/resharper-host/DecompilerCache",
-      "/home/king/.config/JetBrains/Rider2022.3/resharper-host/SourcesCache",
-      "/home/king/.local/share/Symbols/src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;/home/king/.config/JetBrains/Rider2022.3/resharper-host/DecompilerCache&quot;,
+      &quot;/home/king/.config/JetBrains/Rider2022.3/resharper-host/SourcesCache&quot;,
+      &quot;/home/king/.local/share/Symbols/src&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="compiler" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -80,6 +89,7 @@
       <workItem from="1672551177823" duration="389000" />
       <workItem from="1672605782873" duration="283000" />
       <workItem from="1672618763114" duration="11087000" />
+      <workItem from="1673054051809" duration="323000" />
     </task>
     <servers />
   </component>

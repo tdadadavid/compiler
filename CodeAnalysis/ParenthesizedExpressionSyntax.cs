@@ -1,6 +1,6 @@
 namespace compiler.CodeAnalysis
 {
-  sealed class ParenthesizedExpressionSyntax : ExpressionSyntax
+  public sealed class ParenthesizedExpressionSyntax : ExpressionSyntax
   {
     public ParenthesizedExpressionSyntax(SyntaxToken openParenthesizes, ExpressionSyntax expressionSyntax, SyntaxToken closedParenthesizes)
     {

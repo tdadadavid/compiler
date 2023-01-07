@@ -1,6 +1,6 @@
 namespace compiler.CodeAnalysis
 {
-  class Parser
+  internal sealed class Parser
   {
     private readonly SyntaxToken[] _tokens;
     private int _pointer;
