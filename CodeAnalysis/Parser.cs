@@ -38,8 +38,8 @@ namespace compiler.CodeAnalysis
      */
     public SyntaxTree Parse()
     {
-      var expression = ParseTerm();
-      var endOfFileToken = Match(SyntaxKind.EndOfFileToken);
+      var expression = ParseExpression();
+      var endOfFileToken = MatchToken(SyntaxKind.EndOfFileToken);
       return new SyntaxTree(_diagnostics, expression, endOfFileToken);
     }
 
@@ -122,7 +122,7 @@ namespace compiler.CodeAnalysis
      * because of the BinaryExpressionSyntax.
      *
      */
-    private SyntaxToken Match(SyntaxKind kind)
+    private SyntaxToken MatchToken(SyntaxKind kind)
     {
       if (kind == Current.Kind) return NextToken();
 
@@ -174,11 +174,11 @@ namespace compiler.CodeAnalysis
       {
         var left = NextToken();
         var expression = ParseExpression();
-        var right = Match(SyntaxKind.ClosedParenthesesToken);
+        var right = MatchToken(SyntaxKind.ClosedParenthesesToken);
         return new ParenthesizedExpressionSyntax(left, expression, right);
       }
             
-      var numberToken = Match(SyntaxKind.NumberToken);
+      var numberToken = MatchToken(SyntaxKind.NumberToken);
       return new NumberExpressionSyntax(numberToken);
     }
 
