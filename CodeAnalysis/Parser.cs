@@ -52,7 +52,7 @@ namespace compiler.CodeAnalysis
         var precedence = GetPrecedenceForSyntaxKind(Current.Kind);
         if (
             CurrentSyntaxKindIsNotBinaryExpression(precedence) || 
-            CurrentOperatorTokenHasHigherPrecedenceThanPreviousOperatorToken(current: precedence, previous: parentPrecedence)
+            CurrentOperatorTokenHasHigherPrecedenceThanPreviousOperatorToken(current: parentPrecedence, previous: precedence)
           ) break;
 
         var operatorToken = NextToken();

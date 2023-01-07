@@ -4,12 +4,7 @@
     <projectFile>compiler.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="58ee9925-7d22-4a5d-ae62-1c774dedfc32" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.compiler/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.compiler/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeAnalysis/LiteralExpressionSyntax.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/LiteralExpressionSyntax.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeAnalysis/Parser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/Parser.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeAnalysis/SyntaxKind.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/SyntaxKind.cs" afterDir="false" />
-    </list>
+    <list default="true" id="58ee9925-7d22-4a5d-ae62-1c774dedfc32" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -84,7 +79,7 @@
       <workItem from="1672551177823" duration="389000" />
       <workItem from="1672605782873" duration="283000" />
       <workItem from="1672618763114" duration="11087000" />
-      <workItem from="1673054051809" duration="7911000" />
+      <workItem from="1673054051809" duration="8322000" />
     </task>
     <servers />
   </component>
@@ -107,101 +102,6 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/CodeAnalysis/Parser.cs</url>
-          <line>47</line>
-          <properties documentPath="$PROJECT_DIR$/CodeAnalysis/Parser.cs" initialLine="47" containingFunctionPresentation="method 'ParseExpression'">
-            <startOffsets>
-              <option value="1212" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1248" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/CodeAnalysis/Parser.cs</url>
-          <line>51</line>
-          <properties documentPath="$PROJECT_DIR$/CodeAnalysis/Parser.cs" initialLine="51" containingFunctionPresentation="method 'ParseExpression'">
-            <startOffsets>
-              <option value="1285" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1343" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/CodeAnalysis/Parser.cs</url>
-          <line>55</line>
-          <properties documentPath="$PROJECT_DIR$/CodeAnalysis/Parser.cs" initialLine="55" containingFunctionPresentation="method 'ParseExpression'">
-            <startOffsets>
-              <option value="1562" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1568" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/CodeAnalysis/Parser.cs</url>
-          <line>57</line>
-          <properties documentPath="$PROJECT_DIR$/CodeAnalysis/Parser.cs" initialLine="57" containingFunctionPresentation="method 'ParseExpression'">
-            <startOffsets>
-              <option value="1578" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1610" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/CodeAnalysis/Parser.cs</url>
-          <line>58</line>
-          <properties documentPath="$PROJECT_DIR$/CodeAnalysis/Parser.cs" initialLine="58" containingFunctionPresentation="method 'ParseExpression'">
-            <startOffsets>
-              <option value="1619" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1659" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/CodeAnalysis/Parser.cs</url>
-          <line>59</line>
-          <properties documentPath="$PROJECT_DIR$/CodeAnalysis/Parser.cs" initialLine="59" containingFunctionPresentation="method 'ParseExpression'">
-            <startOffsets>
-              <option value="1668" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1730" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/CodeAnalysis/Parser.cs</url>
-          <line>62</line>
-          <properties documentPath="$PROJECT_DIR$/CodeAnalysis/Parser.cs" initialLine="62" containingFunctionPresentation="method 'ParseExpression'">
-            <startOffsets>
-              <option value="1746" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1758" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="Frame#compiler.CodeAnalysis.Parser.ParseExpression" memberName="left" />
