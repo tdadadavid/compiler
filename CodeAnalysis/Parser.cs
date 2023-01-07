@@ -95,10 +95,10 @@ namespace compiler.CodeAnalysis
      * ```
      *    2 + 3 Produces the Syntax Tree
      *    Binary Expression
-     *        NumberExpression
+     *        LiteralExpression
      *           NumberToken 2
      *        PlusToken + 
-     *        NumberExpression
+     *        LiteralExpression
      *           NumberToken 3
      * ```
      * Because our definition of a BinaryExpression (check BinaryExpressionSyntax.cs) is
@@ -131,21 +131,21 @@ namespace compiler.CodeAnalysis
      *         OpenParenthesis
      *            ParenthesizedExpression
      *                OpenParenthesis
-     *                  NumberExpression
+     *                  LiteralExpression
      *                    NumberToken 2
      *                ClosedParenthesis
      *         ClosedParenthesis
      * ```
      * if not true then Its a BinaryExpression not a ParenthesizedExpression
      * It check if the expression is a NumberToken if True
-     * return a NumberExpression else throw an error
+     * return a LiteralExpression else throw an error
      *
      * "ERROR: unexpected token '<token kind>' expected <NumberToken>
      *
      * ```
      *   2 + will provide
      *     BinaryExpression
-     *        NumberExpression
+     *        LiteralExpression
      *          NumberToken 2
      *        PlusToken
      * "ERROR: unexpected token '<EndOfFileToken>' expected '<NumberToken>'
@@ -153,9 +153,9 @@ namespace compiler.CodeAnalysis
      * The error will be thrown because a BinaryExpression is a + b
      * where a & b are binary expressions.
      * But what was provided was a
-     *  NumberExpression<NumberToken<2>> PlusToken<+> EndOfFileToken<>
+     *  LiteralExpression<NumberToken<2>> PlusToken<+> EndOfFileToken<>
      * which does not match the Binary Expression Definition
-     *  NumberExpression<NumberToken<value>> OperatorToken<+,-,*,/> NumberExpression<NumberToken<>>
+     *  LiteralExpression<NumberToken<value>> OperatorToken<+,-,*,/> LiteralExpression<NumberToken<>>
      */
     private ExpressionSyntax ParsePrimaryExpression()
     {
