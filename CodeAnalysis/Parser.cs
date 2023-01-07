@@ -43,20 +43,20 @@ namespace compiler.CodeAnalysis
       return new SyntaxTree(_diagnostics, expression, endOfFileToken);
     }
 
-    private ExpressionSyntax ParseExpression(int parentPrecedence = 0)
+    private ExpressionSyntax ParseExpression(int previousPrecedence = 0)
     {
       var left = ParsePrimaryExpression();
 
       while (true)
       {
-        var precedence = GetPrecedenceForSyntaxKind(Current.Kind);
+        var currentPrecedence = GetPrecedenceForSyntaxKind(Current.Kind);
         if (
-            CurrentSyntaxKindIsNotBinaryExpression(precedence) || 
-            CurrentOperatorTokenHasHigherPrecedenceThanPreviousOperatorToken(current: parentPrecedence, previous: precedence)
+            CurrentSyntaxKindIsNotBinaryExpression(currentPrecedence) || 
+            CurrentOperatorTokenHasHigherPrecedenceThanPreviousOperatorToken(previousPrecedence, currentPrecedence)
           ) break;
 
         var operatorToken = NextToken();
-        var right = ParseExpression(precedence);
+        var right = ParseExpression(currentPrecedence);
         left = new BinaryExpressionSyntax(left, operatorToken, right);
       }
 
@@ -193,18 +193,10 @@ namespace compiler.CodeAnalysis
      * @description get the current token.
      */
     private SyntaxToken Current => Peek(0);
-
-    /**
-     * @description Boolean methods to check the given type of token.
-     */
-    private bool TokenIsMultiplicationToken(SyntaxToken token) => token.Kind == SyntaxKind.MultiplicationToken;
-    private bool TokenIsDivisionToken(SyntaxToken token) => token.Kind == SyntaxKind.DivisionToken;
-    private bool TokenIsSubtractionToken(SyntaxToken token) => token.Kind == SyntaxKind.SubtractionToken;
-    private bool TokenIsPlusToken(SyntaxToken token) => token.Kind == SyntaxKind.PlusToken;
-
+    
     private bool CurrentSyntaxKindIsNotBinaryExpression(int precedence) => precedence == 0;
 
-    private bool CurrentOperatorTokenHasHigherPrecedenceThanPreviousOperatorToken(int current, int previous) =>
-    previous <= current;
+    private bool CurrentOperatorTokenHasHigherPrecedenceThanPreviousOperatorToken(int previous, int current) =>
+    previous >= current;
   }
 }
