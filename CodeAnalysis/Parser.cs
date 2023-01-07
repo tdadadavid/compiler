@@ -179,7 +179,7 @@ namespace compiler.CodeAnalysis
       }
             
       var numberToken = MatchToken(SyntaxKind.NumberToken);
-      return new NumberExpressionSyntax(numberToken);
+      return new LiteralExpressionSyntax(numberToken);
     }
 
     /**

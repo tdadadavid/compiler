@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="58ee9925-7d22-4a5d-ae62-1c774dedfc32" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/CodeAnalysis/SyntaxKind.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/SyntaxKind.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.compiler/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.compiler/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +80,7 @@
       <workItem from="1672551177823" duration="389000" />
       <workItem from="1672605782873" duration="283000" />
       <workItem from="1672618763114" duration="11087000" />
-      <workItem from="1673054051809" duration="647000" />
+      <workItem from="1673054051809" duration="1265000" />
     </task>
     <servers />
   </component>
