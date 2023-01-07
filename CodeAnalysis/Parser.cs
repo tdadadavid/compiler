@@ -43,60 +43,49 @@ namespace compiler.CodeAnalysis
       return new SyntaxTree(_diagnostics, expression, endOfFileToken);
     }
 
-    /**
-     * @description This simulates the recursive descent parser
-     * since am using a while loop right now, I use ParseFactor
-     * to bind Binary Expression tightly coupled together by the
-     * operator binding them. eg 1 + 2 * 3 = 7 not 9 because "*"
-     * has higher precedence over "+", same goes for division "*" and
-     * subtraction "-".
-     */
-    // Parses + and -, that's all I understand for now
-    private ExpressionSyntax ParseTerm()
+    private ExpressionSyntax ParseExpression(int parentPrecedence = 0)
     {
-      // The Pre-Order Traversal (L-ROOT-R) algorithm is used here 
-      // Where Left (l) ==> Operands eg Numbers
-      //       Root (ROOT) ==> Operator eg (*,+,-)
-      //       Right (r) ==>  Operands eg Numbers
-      // simulating a recursive descent parsing technique
-      var left = ParseFactor();
-            
-      while (TokenIsPlusToken(Current) || TokenIsSubtractionToken(Current))
-      {
-        var operatorToken = NextToken();
-        var right = ParseFactor();
-        left = new BinaryExpressionSyntax(left, operatorToken, right);
-      }
-
-      return left;
-    }
-
-    /**
-     * @description this parses binary expressions bounded by higher
-     * precedent operators "*" and "/"
-     */
-    private ExpressionSyntax ParseFactor()
-    {
-      // The Pre-Order Traversal (L-ROOT-R) algorithm is used here 
-      // Where Left (l) ==> Operands eg Numbers
-      //       Root (ROOT) ==> Operator eg (*,+,-)
-      //       Right (r) ==>  Operands eg Numbers
       var left = ParsePrimaryExpression();
 
-      while (TokenIsDivisionToken(Current) || TokenIsMultiplicationToken(Current))
+      while (true)
       {
+        var precedence = GetPrecedenceForSyntaxKind(Current.Kind);
+        if (
+            CurrentSyntaxKindIsNotBinaryExpression(precedence) || 
+            CurrentOperatorTokenHasHigherPrecedenceThanPreviousOperatorToken(current: precedence, previous: parentPrecedence)
+          ) break;
+
         var operatorToken = NextToken();
-        var right = ParsePrimaryExpression();
+        var right = ParseExpression(precedence);
         left = new BinaryExpressionSyntax(left, operatorToken, right);
       }
 
       return left;
     }
 
-
-    private ExpressionSyntax ParseExpression()
+    /**
+     * @description This returns the precedence of the given kind
+     * of Syntax.
+     *
+     * For Multiplication and Division, They carry higher precedence
+     * compared to Addition and Subtraction.
+     */
+    private static int GetPrecedenceForSyntaxKind(SyntaxKind kind)
     {
-      return ParseTerm();
+      switch (kind)
+      {
+        case SyntaxKind.MultiplicationToken:
+        case SyntaxKind.DivisionToken:
+          return 2;
+        
+        case SyntaxKind.PlusToken:
+        case SyntaxKind.SubtractionToken:
+          return 1;
+        
+        default:
+          return 0;
+        
+      }
     }
     
     /**
@@ -212,5 +201,10 @@ namespace compiler.CodeAnalysis
     private bool TokenIsDivisionToken(SyntaxToken token) => token.Kind == SyntaxKind.DivisionToken;
     private bool TokenIsSubtractionToken(SyntaxToken token) => token.Kind == SyntaxKind.SubtractionToken;
     private bool TokenIsPlusToken(SyntaxToken token) => token.Kind == SyntaxKind.PlusToken;
+
+    private bool CurrentSyntaxKindIsNotBinaryExpression(int precedence) => precedence == 0;
+
+    private bool CurrentOperatorTokenHasHigherPrecedenceThanPreviousOperatorToken(int current, int previous) =>
+    previous <= current;
   }
 }
