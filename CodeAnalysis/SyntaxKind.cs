@@ -17,7 +17,7 @@ namespace compiler.CodeAnalysis
     EndOfFileToken,
     
     //Expression
-    NumberExpression,
+    LiteralExpression,
     BinaryExpression,
     ParenthesizedExpression
   }
