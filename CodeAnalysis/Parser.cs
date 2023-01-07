@@ -42,6 +42,56 @@ namespace compiler.CodeAnalysis
       var endOfFileToken = MatchToken(SyntaxKind.EndOfFileToken);
       return new SyntaxTree(_diagnostics, expression, endOfFileToken);
     }
+    
+    /**
+     * @description:
+     *  This methods parses any given array of SyntaxToken and evaluates
+     *  them using "Operator Precedence'
+     *
+     *  It accepts a default value called 'precedence' to take account of the
+     *  last operator precedence. By default it is 'Zero' because.
+     *
+     *  Lets work through an example:
+     *    Given: 200 - 80 / 2
+     *  parsing this into a syntax tree format we'll have
+     *
+     *  ```
+     *    BinaryExpression
+     *      LiteralExpression
+     *          NumberToken    200
+     *      SubtractionToken    -
+     *      BinaryExpression
+     *          LiteralExpression
+     *             NumberToken  80
+     *          DivisionToken   /
+     *          LiteralExpression
+     *             NumberToken  2
+     * ```
+     *
+     * How this is achieved is that
+     *  First:
+     *    - We parse the first token from our Lexer (lexer.ScanThroughText()) which is a NumberToken<1>
+     *    so "left" = SyntaxToken<NumberToken<1>>
+     *  Second:
+     *    - Now start a loop
+     *    - Get the precedence of the current token by checking the its precedence in the static method
+     *     `GetPrecedenceForSyntaxKind` so the current SyntaxToken is a NumberToken and its precedence is
+     *     `0` (actually precedence has to do with operators <+,-,*,/>
+     *    - Store the currentPrecedence as `0`
+     *  Third:
+     *    - Check two necessary conditions
+     *      a. Is this a valid `BinaryExpression Operator` ?
+     *      b. Is the previousPrecedence(0) lower than the currentPrecedence(0)
+     *
+     *      Answering a.
+     *        If we look at the GetPrecedenceForSyntaxKind we see that any token that is
+     *        not [+, -, *, /] we return 0,Then the helper method `CurrentOperatorIsBinaryExpressionOperator`
+     *        checks if it's a BinaryExpression Operator and returns false as the answer
+     *     Answering b.
+     *        This is simple, just ask is currentPrecedence >= previousPrecedence (0 >= 0) which is true.
+     *    - So True or False ==> True.
+     *    **The evaluation stops as the break statement is called and moves to the line**      
+     */
 
     private ExpressionSyntax ParseExpression(int previousPrecedence = 0)
     {
@@ -51,7 +101,7 @@ namespace compiler.CodeAnalysis
       {
         var currentPrecedence = GetPrecedenceForSyntaxKind(Current.Kind);
         if (
-            CurrentSyntaxKindIsNotBinaryExpression(currentPrecedence) || 
+            !CurrentOperatorIsBinaryExpressionOperator(currentPrecedence) || 
             CurrentOperatorTokenHasHigherPrecedenceThanPreviousOperatorToken(previousPrecedence, currentPrecedence)
           ) break;
 
@@ -194,7 +244,7 @@ namespace compiler.CodeAnalysis
      */
     private SyntaxToken Current => Peek(0);
     
-    private bool CurrentSyntaxKindIsNotBinaryExpression(int precedence) => precedence == 0;
+    private bool CurrentOperatorIsBinaryExpressionOperator(int precedence) => precedence != 0;
 
     private bool CurrentOperatorTokenHasHigherPrecedenceThanPreviousOperatorToken(int previous, int current) =>
     previous >= current;
