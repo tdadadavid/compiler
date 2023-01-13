@@ -1,5 +1,8 @@
 namespace compiler.CodeAnalysis
 {
+  
+  
+  
   internal sealed class Parser
   {
     private readonly SyntaxToken[] _tokens;
@@ -42,7 +45,7 @@ namespace compiler.CodeAnalysis
       var endOfFileToken = MatchToken(SyntaxKind.EndOfFileToken);
       return new SyntaxTree(_diagnostics, expression, endOfFileToken);
     }
-    
+
     /**
      * @description:
      *  This methods parses any given array of SyntaxToken and evaluates
@@ -99,11 +102,11 @@ namespace compiler.CodeAnalysis
 
       while (true)
       {
-        var currentPrecedence = GetPrecedenceForSyntaxKind(Current.Kind);
+        var currentPrecedence = Current.Kind.GetPrecedenceForSyntaxKind();
         if (
-            !CurrentOperatorIsBinaryExpressionOperator(currentPrecedence) || 
-            CurrentOperatorTokenHasHigherPrecedenceThanPreviousOperatorToken(previousPrecedence, currentPrecedence)
-          ) break;
+          !CurrentOperatorIsBinaryExpressionOperator(currentPrecedence) ||
+          CurrentOperatorTokenHasHigherPrecedenceThanPreviousOperatorToken(previousPrecedence, currentPrecedence)
+        ) break;
 
         var operatorToken = NextToken();
         var right = ParseExpression(currentPrecedence);
@@ -113,31 +116,6 @@ namespace compiler.CodeAnalysis
       return left;
     }
 
-    /**
-     * @description This returns the precedence of the given kind
-     * of Syntax.
-     *
-     * For Multiplication and Division, They carry higher precedence
-     * compared to Addition and Subtraction.
-     */
-    private static int GetPrecedenceForSyntaxKind(SyntaxKind kind)
-    {
-      switch (kind)
-      {
-        case SyntaxKind.MultiplicationToken:
-        case SyntaxKind.DivisionToken:
-          return 2;
-        
-        case SyntaxKind.PlusToken:
-        case SyntaxKind.SubtractionToken:
-          return 1;
-        
-        default:
-          return 0;
-        
-      }
-    }
-    
     /**
      * @description Check if the current kind of token matches the
      * expected token in a Binary expression. For example the expression
