@@ -18,7 +18,8 @@ namespace compiler.CodeAnalysis
     
     //Expression
     LiteralExpression,
+    UnaryExpression,
     BinaryExpression,
-    ParenthesizedExpression
+    ParenthesizedExpression,
   }
 }

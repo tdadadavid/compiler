@@ -187,7 +187,14 @@ namespace compiler.CodeAnalysis
      */
     private ExpressionSyntax ParsePrimaryExpression()
     {
-      if (Current.Kind == SyntaxKind.OpenParenthesesToken)
+      if (Current.Kind is SyntaxKind.SubtractionToken or SyntaxKind.PlusToken)
+      {
+        var left = NextToken();
+        var expression = ParseExpression();
+        return new UnaryExpressionSyntax(left, expression);
+      }
+      
+      if (Current.Kind is SyntaxKind.OpenParenthesesToken)
       {
         var left = NextToken();
         var expression = ParseExpression();

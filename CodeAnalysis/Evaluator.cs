@@ -35,6 +35,19 @@ namespace compiler.CodeAnalysis
         };
       }
 
+      if (node is UnaryExpressionSyntax u)
+      {
+        var operand = EvaluateExpression(u.Operand); 
+        var operatorTokenKind = u.OperatorToken.Kind;
+
+        return operatorTokenKind switch
+        {
+        SyntaxKind.PlusToken => operand,
+        SyntaxKind.SubtractionToken => -operand,
+        _ => throw new Exception($"Unexpected node {node.Kind}")
+        };
+      }
+
       if (node is ParenthesizedExpressionSyntax p) return EvaluateExpression(p.ExpressionSyntax);
       throw new Exception($"Unexpected node {node.Kind}");
     }

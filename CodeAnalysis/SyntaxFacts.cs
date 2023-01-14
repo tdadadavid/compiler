@@ -2,7 +2,6 @@ namespace compiler.CodeAnalysis
 {
   static class SyntaxFacts
   {
-    
     /**
      * @description This returns the precedence of the given kind
      * of Syntax.
