@@ -1,5 +1,5 @@
 
-namespace compiler.CodeAnalysis
+namespace compiler.CodeAnalysis.Syntax
 {
   public sealed class LiteralExpressionSyntax : ExpressionSyntax
   {

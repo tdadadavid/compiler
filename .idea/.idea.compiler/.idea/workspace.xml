@@ -5,9 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="58ee9925-7d22-4a5d-ae62-1c774dedfc32" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/CodeAnalysis/Syntax/SyntaxTree.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.compiler/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.compiler/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeAnalysis/Parser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/Parser.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeAnalysis/SyntaxFacts.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/SyntaxFacts.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/BinaryExpressionSyntax.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/Syntax/BinaryExpressionSyntax.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/Evaluator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/Evaluator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/ExpressionSyntax.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/Syntax/ExpressionSyntax.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/Lexer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/Syntax/Lexer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/LiteralExpressionSyntax.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/Syntax/LiteralExpressionSyntax.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/ParenthesizedExpressionSyntax.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/Syntax/ParenthesizedExpressionSyntax.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/Parser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/Syntax/Parser.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/SyntaxFacts.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/Syntax/SyntaxFacts.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/SyntaxKind.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/Syntax/SyntaxKind.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/SyntaxNode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/Syntax/SyntaxNode.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/SyntaxToken.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/Syntax/SyntaxToken.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/SyntaxTree.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeAnalysis/UnaryExpressionSyntax.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CodeAnalysis/Syntax/UnaryExpressionSyntax.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +31,8 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a7e2055f09874ff48dc81d5d6ca61a3377000/6c/b62045b4/Enumerable.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a421bf72ce1bd97d2cd3e8739d53f71ff6052294923c475677806b3df7381/ThrowHelper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d81d50aa37afb114327ac8c4d01d3b613a33760a32bdc25f64bc5165e552e4/Int32.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CodeAnalysis/Syntax/Parser.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CodeAnalysis/Syntax/SyntaxTree.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -85,7 +100,7 @@
       <workItem from="1672618763114" duration="11087000" />
       <workItem from="1673054051809" duration="11089000" />
       <workItem from="1673108163871" duration="1192000" />
-      <workItem from="1673644772774" duration="9630000" />
+      <workItem from="1673644772774" duration="10930000" />
     </task>
     <servers />
   </component>

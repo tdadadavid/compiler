@@ -1,52 +1,49 @@
-namespace compiler.CodeAnalysis
+namespace compiler.CodeAnalysis.Syntax;
+
+internal sealed class Parser
 {
-  
-  
-  
-  internal sealed class Parser
+  private readonly SyntaxToken[] _tokens;
+  private int _pointer;
+  private readonly List<string> _diagnostics = new List<string>();
+
+  public Parser(string text)
   {
-    private readonly SyntaxToken[] _tokens;
-    private int _pointer;
-    private readonly List<string> _diagnostics = new List<string>();
+    var lexer = new Lexer(text);
 
-    public Parser(string text)
-    {
-      var lexer = new Lexer(text);
+    // scan through the input stream and break down into tokens
+    // then pass the tokens as an array to the parser.
+    // A lexer is also called a scanner.
+    _tokens = lexer.ScanThroughText(); 
 
-      // scan through the input stream and break down into tokens
-      // then pass the tokens as an array to the parser.
-      // A lexer is also called a scanner.
-      _tokens = lexer.ScanThroughText(); 
+    // add all the errors to the parser.
+    _diagnostics.AddRange(lexer.Diagnostic);
+  }
 
-      // add all the errors to the parser.
-      _diagnostics.AddRange(lexer.Diagnostic);
-    }
-
-    // get all errors 
-    public IEnumerable<string> Diagnostics => _diagnostics;
+  // get all errors 
+  public IEnumerable<string> Diagnostics => _diagnostics;
 
   
-    /**
+  /**
      * @returns the Current Token and shifts the position to the next token
      */
-    private SyntaxToken NextToken()
-    {
-      var result = Current;
-      _pointer++;
-      return result;
-    }
+  private SyntaxToken NextToken()
+  {
+    var result = Current;
+    _pointer++;
+    return result;
+  }
 
-    /**
+  /**
      * 
      */
-    public SyntaxTree Parse()
-    {
-      var expression = ParseExpression();
-      var endOfFileToken = MatchToken(SyntaxKind.EndOfFileToken);
-      return new SyntaxTree(_diagnostics, expression, endOfFileToken);
-    }
+  public SyntaxTree Parse()
+  {
+    var expression = ParseExpression();
+    var endOfFileToken = MatchToken(SyntaxKind.EndOfFileToken);
+    return new SyntaxTree(_diagnostics, expression, endOfFileToken);
+  }
 
-    /**
+  /**
      * @description:
      *  This methods parses any given array of SyntaxToken and evaluates
      *  them using "Operator Precedence'
@@ -96,41 +93,41 @@ namespace compiler.CodeAnalysis
      *    **The evaluation stops as the break statement is called and moves to the line**      
      */
 
-    private ExpressionSyntax ParseExpression(int previousPrecedence = 0)
+  private ExpressionSyntax ParseExpression(int previousPrecedence = 0)
+  {
+    ExpressionSyntax left;
+      
+    var unaryOperatorPrecedence = Current.Kind.GetUnaryPrecedenceForSyntaxKind();
+      
+    if (unaryOperatorPrecedence != 0 && unaryOperatorPrecedence > previousPrecedence)
     {
-      ExpressionSyntax left;
-      
-      var unaryOperatorPrecedence = Current.Kind.GetUnaryPrecedenceForSyntaxKind();
-      
-      if (unaryOperatorPrecedence != 0 && unaryOperatorPrecedence > previousPrecedence)
-      {
-        var operatorToken = NextToken();
-        var operand = ParseExpression();
-        left = new UnaryExpressionSyntax(operatorToken, operand);
-      }
-      else
-      {
-        left = ParsePrimaryExpression();
-      }
+      var operatorToken = NextToken();
+      var operand = ParseExpression();
+      left = new UnaryExpressionSyntax(operatorToken, operand);
+    }
+    else
+    {
+      left = ParsePrimaryExpression();
+    }
         
 
-      while  (true)
-      {
-        var currentPrecedence = Current.Kind.GetBinaryPrecedenceForSyntaxKind();
-        if (
-          !CurrentOperatorIsBinaryExpressionOperator(currentPrecedence) ||
-          CurrentOperatorTokenHasHigherPrecedenceThanPreviousOperatorToken(previousPrecedence, currentPrecedence)
-        ) break;
+    while  (true)
+    {
+      var currentPrecedence = Current.Kind.GetBinaryPrecedenceForSyntaxKind();
+      if (
+        !CurrentOperatorIsBinaryExpressionOperator(currentPrecedence) ||
+        CurrentOperatorTokenHasHigherPrecedenceThanPreviousOperatorToken(previousPrecedence, currentPrecedence)
+      ) break;
 
-        var operatorToken = NextToken();
-        var right = ParseExpression(currentPrecedence);
-        left = new BinaryExpressionSyntax(left, operatorToken, right);
-      }
-
-      return left;
+      var operatorToken = NextToken();
+      var right = ParseExpression(currentPrecedence);
+      left = new BinaryExpressionSyntax(left, operatorToken, right);
     }
 
-    /**
+    return left;
+  }
+
+  /**
      * @description Check if the current kind of token matches the
      * expected token in a Binary expression. For example the expression
      * 
@@ -153,15 +150,15 @@ namespace compiler.CodeAnalysis
      * because of the BinaryExpressionSyntax.
      *
      */
-    private SyntaxToken MatchToken(SyntaxKind kind)
-    {
-      if (kind == Current.Kind) return NextToken();
+  private SyntaxToken MatchToken(SyntaxKind kind)
+  {
+    if (kind == Current.Kind) return NextToken();
 
-      _diagnostics.Add($"ERROR: unexpected token '<{Current.Kind}>' expected '<{kind}>'");
-      return new SyntaxToken(kind, Current.Position, null, null);
-    }
+    _diagnostics.Add($"ERROR: unexpected token '<{Current.Kind}>' expected '<{kind}>'");
+    return new SyntaxToken(kind, Current.Position, null, null);
+  }
 
-    /**
+  /**
      * @description Parses Primary Expressions such as ["(", ")", "+"]
      * First it checks if the expression (input) is a open parenthesis
      * if its true it goes for the next token then parses the remaining
@@ -199,53 +196,52 @@ namespace compiler.CodeAnalysis
      * which does not match the Binary Expression Definition
      *  LiteralExpression<NumberToken<value>> OperatorToken<+,-,*,/> LiteralExpression<NumberToken<>>
      */
-    private ExpressionSyntax ParsePrimaryExpression()
+  private ExpressionSyntax ParsePrimaryExpression()
+  {
+    if (Current.Kind is SyntaxKind.SubtractionToken or SyntaxKind.PlusToken)
     {
-      if (Current.Kind is SyntaxKind.SubtractionToken or SyntaxKind.PlusToken)
-      {
-        var left = NextToken();
-        var expression = ParseExpression();
-        return new UnaryExpressionSyntax(left, expression);
-      }
-      
-      if (Current.Kind is SyntaxKind.OpenParenthesesToken)
-      {
-        var left = NextToken();
-        var expression = ParseExpression();
-        var right = MatchToken(SyntaxKind.ClosedParenthesesToken);
-        return new ParenthesizedExpressionSyntax(left, expression, right);
-      }
-            
-      var numberToken = MatchToken(SyntaxKind.NumberToken);
-      return new LiteralExpressionSyntax(numberToken);
+      var left = NextToken();
+      var expression = ParseExpression();
+      return new UnaryExpressionSyntax(left, expression);
     }
+      
+    if (Current.Kind is SyntaxKind.OpenParenthesesToken)
+    {
+      var left = NextToken();
+      var expression = ParseExpression();
+      var right = MatchToken(SyntaxKind.ClosedParenthesesToken);
+      return new ParenthesizedExpressionSyntax(left, expression, right);
+    }
+            
+    var numberToken = MatchToken(SyntaxKind.NumberToken);
+    return new LiteralExpressionSyntax(numberToken);
+  }
 
-    /**
+  /**
      * @description Checks the token a desired point in
      * the token list.
      * if the offset given causes the pointer to go outside
      * the token list then return the last token in the list
      * else return the token at the desired location.
      */
-    private SyntaxToken Peek(int offset)
-    {
-      var index = _pointer + offset;
-      // if the position is outside the length of the array of tokens
-      // return the last element in the array else just return the 
-      // element in the required index.
-      return index >= _tokens.Length
-      ? _tokens[^1]  // return last element (c# lingo).
-      : _tokens[index];
-    }
+  private SyntaxToken Peek(int offset)
+  {
+    var index = _pointer + offset;
+    // if the position is outside the length of the array of tokens
+    // return the last element in the array else just return the 
+    // element in the required index.
+    return index >= _tokens.Length
+    ? _tokens[^1]  // return last element (c# lingo).
+    : _tokens[index];
+  }
 
-    /**
+  /**
      * @description get the current token.
      */
-    private SyntaxToken Current => Peek(0);
+  private SyntaxToken Current => Peek(0);
 
-    private bool CurrentOperatorIsBinaryExpressionOperator(int precedence) => precedence != 0;
+  private bool CurrentOperatorIsBinaryExpressionOperator(int precedence) => precedence != 0;
 
-    private bool CurrentOperatorTokenHasHigherPrecedenceThanPreviousOperatorToken(int previous, int current) =>
-    previous >= current;
-  }
+  private bool CurrentOperatorTokenHasHigherPrecedenceThanPreviousOperatorToken(int previous, int current) =>
+  previous >= current;
 }
