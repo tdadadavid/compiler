@@ -98,11 +98,25 @@ namespace compiler.CodeAnalysis
 
     private ExpressionSyntax ParseExpression(int previousPrecedence = 0)
     {
-      var left = ParsePrimaryExpression();
-
-      while (true)
+      ExpressionSyntax left;
+      
+      var unaryOperatorPrecedence = Current.Kind.GetUnaryPrecedenceForSyntaxKind();
+      
+      if (unaryOperatorPrecedence != 0 && unaryOperatorPrecedence > previousPrecedence)
       {
-        var currentPrecedence = Current.Kind.GetPrecedenceForSyntaxKind();
+        var operatorToken = NextToken();
+        var operand = ParseExpression();
+        left = new UnaryExpressionSyntax(operatorToken, operand);
+      }
+      else
+      {
+        left = ParsePrimaryExpression();
+      }
+        
+
+      while  (true)
+      {
+        var currentPrecedence = Current.Kind.GetBinaryPrecedenceForSyntaxKind();
         if (
           !CurrentOperatorIsBinaryExpressionOperator(currentPrecedence) ||
           CurrentOperatorTokenHasHigherPrecedenceThanPreviousOperatorToken(previousPrecedence, currentPrecedence)
@@ -228,7 +242,7 @@ namespace compiler.CodeAnalysis
      * @description get the current token.
      */
     private SyntaxToken Current => Peek(0);
-    
+
     private bool CurrentOperatorIsBinaryExpressionOperator(int precedence) => precedence != 0;
 
     private bool CurrentOperatorTokenHasHigherPrecedenceThanPreviousOperatorToken(int previous, int current) =>

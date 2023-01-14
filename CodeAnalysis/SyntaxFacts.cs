@@ -2,6 +2,20 @@ namespace compiler.CodeAnalysis
 {
   static class SyntaxFacts
   {
+
+    public static int GetUnaryPrecedenceForSyntaxKind(this SyntaxKind kind)
+    {
+      switch (kind)
+      {
+        case SyntaxKind.PlusToken:
+        case SyntaxKind.SubtractionToken:
+          return 3;
+        
+        default:
+          return 0;
+      }
+    }
+    
     /**
      * @description This returns the precedence of the given kind
      * of Syntax.
@@ -10,7 +24,7 @@ namespace compiler.CodeAnalysis
      * compared to Addition and Subtraction.
      */
     
-    public static int GetPrecedenceForSyntaxKind(this SyntaxKind kind)
+    public static int GetBinaryPrecedenceForSyntaxKind(this SyntaxKind kind)
     {
       switch (kind)
       {
